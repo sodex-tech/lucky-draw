@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>Public Ticket Draw</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <strong class="program-title">Public Ticket Draw</strong>
+      <div class="topbar-actions">
+        <span class="dataset-status" id="dataset-status"><i aria-hidden="true"></i> Loading tickets</span>
+        <button class="topbar-download-button" id="download-button" type="button" disabled>Download all CSV</button>
+        <button class="sound-button" id="sound-button" type="button" aria-pressed="true">
+          <span aria-hidden="true">♪</span><span>Sound on</span>
+        </button>
+        <button class="sound-button" id="voice-button" type="button" aria-pressed="true">
+          <span aria-hidden="true">🎙</span><span>Voice on</span>
+        </button>
+        <div class="broadcast-status" id="broadcast-status"><i aria-hidden="true"></i><span>READY</span></div>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="draw-stage" id="draw-stage">
+        <header class="draw-toolbar">
+          <div>
+            <p>CURRENT ROUND <span id="tier-progress">0 / 4</span></p>
+            <h1 id="tier-title">Loading official ticket map</h1>
+            <span id="draw-message">Preparing all ticket numbers</span>
+          </div>
+          <div class="draw-controls">
+            <button class="toolbar-reset-button" id="rules-button" type="button">Intro &amp; Rules</button>
+            <div class="countdown" id="countdown">
+              <strong id="countdown-value">10.0</strong><span>SEC</span>
+            </div>
+            <button class="draw-button" id="draw-button" type="button" disabled>Loading</button>
+            <button class="toolbar-reset-button" id="reset-button" type="button">Reset</button>
+          </div>
+        </header>
+
+        <div class="seed-panel" id="seed-panel">
+          <label class="seed-control" for="seed-input">
+            <span>PUBLIC SEED</span>
+            <input
+              id="seed-input"
+              type="text"
+              maxlength="128"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Enter or randomize a seed"
+            />
+          </label>
+          <button class="seed-action-button" id="seed-randomize-button" type="button" title="Generate a new random seed">Randomize</button>
+          <button class="seed-action-button" id="seed-copy-button" type="button" title="Copy the current seed">Copy</button>
+        </div>
+
+        <div class="ticket-board" id="ticket-board" aria-label="All draw ticket numbers">
+          <div class="ticket-virtualizer" id="ticket-virtualizer">
+            <div class="ticket-grid" id="ticket-grid"></div>
+          </div>
+          <div class="loading-wall" id="loading-wall">Loading 27,283 ticket numbers…</div>
+        </div>
+      </section>
+
+      <aside class="result-rail">
+        <header>
+          <div><p>CONFIRMED RESULTS</p><h2 id="latest-tier">No winners yet</h2></div>
+          <span id="winner-count">0 / 500</span>
+        </header>
+        <div class="winner-strip" id="winner-strip"><p>Winning ticket numbers will appear here.</p></div>
+        <div class="result-list" id="result-list"><p class="empty-results">Start the 4th Prize draw to begin.</p></div>
+      </aside>
+    </main>
+
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>

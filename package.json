@@ -1,0 +1,12 @@
+{
+  "name": "public-ticket-draw",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "test": "node --test draw-engine.test.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.0.0"
+  }
+}
