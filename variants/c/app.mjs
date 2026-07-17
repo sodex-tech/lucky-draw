@@ -35,6 +35,7 @@ const elements = {
   drawButton: document.querySelector("#draw-button"),
   drawMessage: document.querySelector("#draw-message"),
   drawStage: document.querySelector("#draw-stage"),
+  introClose: document.querySelector("#intro-close"),
   introOverlay: document.querySelector("#intro-overlay"),
   latestTier: document.querySelector("#latest-tier"),
   loadingWall: document.querySelector("#loading-wall"),
@@ -155,7 +156,9 @@ const VOICE_CLIPS = [
   "done-fourth",
   "done-third",
   "done-second",
-  "complete",
+  "complete-1",
+  "complete-2",
+  "complete-3",
 ];
 
 const voiceClips = new Map(VOICE_CLIPS.map((name) => {
@@ -592,7 +595,7 @@ async function handleDraw() {
     state.drawing = false;
     persistSession();
     if (state.tierIndex >= PRIZE_TIERS.length) {
-      playVoice("complete");
+      playVoiceSequence(["complete-1", "complete-2", "complete-3"]);
     } else {
       playVoice(`done-${tier.key}`);
     }
@@ -765,6 +768,7 @@ elements.seedInput.addEventListener("input", (event) => {
   render();
 });
 elements.rulesButton.addEventListener("click", playIntro);
+elements.introClose.addEventListener("click", stopVoice);
 elements.seedRandomizeButton.addEventListener("click", () => void randomizeSeed());
 elements.seedCopyButton.addEventListener("click", (event) => void copySeed(event.currentTarget));
 elements.soundButton.addEventListener("click", toggleSound);
