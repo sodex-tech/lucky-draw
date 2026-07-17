@@ -35,6 +35,7 @@ const elements = {
   drawButton: document.querySelector("#draw-button"),
   drawMessage: document.querySelector("#draw-message"),
   drawStage: document.querySelector("#draw-stage"),
+  introOverlay: document.querySelector("#intro-overlay"),
   latestTier: document.querySelector("#latest-tier"),
   loadingWall: document.querySelector("#loading-wall"),
   resetButton: document.querySelector("#reset-button"),
@@ -142,6 +143,7 @@ const VOICE_CLIPS = [
   "intro-1",
   "intro-2",
   "intro-3",
+  "intro-4",
   "tier-fourth-1",
   "tier-fourth-2",
   "tier-third-1",
@@ -171,10 +173,12 @@ introMusic.volume = 0.13;
 let activeVoice = null;
 let voiceQueue = [];
 let voiceSequenceEnd = null;
+let voiceClipStart = null;
 
 function finishVoiceSequence(completed) {
   activeVoice = null;
   voiceQueue = [];
+  voiceClipStart = null;
   const onDone = voiceSequenceEnd;
   voiceSequenceEnd = null;
   if (onDone) onDone(completed);
@@ -200,6 +204,7 @@ function playNextVoiceInQueue() {
     return;
   }
   activeVoice = clip;
+  if (voiceClipStart) voiceClipStart(name);
   clip.currentTime = 0;
   clip.onended = () => {
     if (activeVoice === clip) playNextVoiceInQueue();
@@ -209,7 +214,7 @@ function playNextVoiceInQueue() {
   });
 }
 
-function playVoiceSequence(names, onDone = null) {
+function playVoiceSequence(names, onDone = null, onClipStart = null) {
   if (!state.voiceEnabled) {
     if (onDone) onDone(false);
     return;
@@ -217,6 +222,7 @@ function playVoiceSequence(names, onDone = null) {
   stopVoice();
   voiceQueue = [...names];
   voiceSequenceEnd = onDone;
+  voiceClipStart = onClipStart;
   playNextVoiceInQueue();
 }
 
@@ -229,10 +235,21 @@ function playTierAnnouncement(tier) {
   playVoice(`tier-${tier.key}-${variant}`);
 }
 
+function showIntroSlide(name) {
+  elements.introOverlay.hidden = false;
+  elements.introOverlay.querySelectorAll(".intro-slide").forEach((slide) => {
+    slide.classList.toggle("is-active", slide.dataset.slide === name);
+  });
+}
+
 function stopIntro() {
   introMusic.pause();
   introMusic.currentTime = 0;
   state.introPlaying = false;
+  elements.introOverlay.hidden = true;
+  elements.introOverlay.querySelectorAll(".intro-slide").forEach((slide) => {
+    slide.classList.remove("is-active");
+  });
 }
 
 function playIntro() {
@@ -247,10 +264,14 @@ function playIntro() {
     void introMusic.play().catch(() => {});
   }
   render();
-  playVoiceSequence(["intro-1", "intro-2", "intro-3"], () => {
-    stopIntro();
-    render();
-  });
+  playVoiceSequence(
+    ["intro-1", "intro-2", "intro-3", "intro-4"],
+    () => {
+      stopIntro();
+      render();
+    },
+    showIntroSlide,
+  );
 }
 
 function playConfirmation() {
