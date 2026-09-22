@@ -1,5 +1,5 @@
 {
-  "name": "public-ticket-draw",
+  "name": "lucky-draw",
   "private": true,
   "type": "module",
   "scripts": {

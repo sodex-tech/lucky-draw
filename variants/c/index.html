@@ -5,20 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="data:," />
-    <title>Public Ticket Draw</title>
+    <title>Lucky Draw</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
-      <strong class="program-title">Public Ticket Draw</strong>
+      <strong class="program-title" id="program-title">Lucky Draw</strong>
       <div class="topbar-actions">
-        <span class="dataset-status" id="dataset-status"><i aria-hidden="true"></i> Loading tickets</span>
+        <span class="dataset-status" id="dataset-status"><i aria-hidden="true"></i> No tickets imported</span>
+        <button class="topbar-ghost-button" id="settings-button" type="button">Settings</button>
         <button class="topbar-download-button" id="download-button" type="button" disabled>Download all CSV</button>
         <button class="sound-button" id="sound-button" type="button" aria-pressed="true">
           <span aria-hidden="true">♪</span><span>Sound on</span>
-        </button>
-        <button class="sound-button" id="voice-button" type="button" aria-pressed="true">
-          <span aria-hidden="true">🎙</span><span>Voice on</span>
         </button>
         <div class="broadcast-status" id="broadcast-status"><i aria-hidden="true"></i><span>READY</span></div>
       </div>
@@ -28,19 +26,20 @@
       <section class="draw-stage" id="draw-stage">
         <header class="draw-toolbar">
           <div>
-            <p>CURRENT ROUND <span id="tier-progress">0 / 4</span></p>
-            <h1 id="tier-title">Loading official ticket map</h1>
-            <span id="draw-message">Preparing all ticket numbers</span>
+            <p>CURRENT ROUND <span id="round-progress">0 / 0</span></p>
+            <h1 id="round-title">No draw configured</h1>
+            <span id="draw-message">Open Settings to import tickets and define prizes</span>
           </div>
           <div class="draw-controls">
-            <button class="toolbar-reset-button" id="rules-button" type="button">Intro &amp; Rules</button>
             <div class="countdown" id="countdown">
               <strong id="countdown-value">10.0</strong><span>SEC</span>
             </div>
-            <button class="draw-button" id="draw-button" type="button" disabled>Loading</button>
+            <button class="draw-button" id="draw-button" type="button" disabled>Start round</button>
             <button class="toolbar-reset-button" id="reset-button" type="button">Reset</button>
           </div>
         </header>
+
+        <div class="round-plan" id="round-plan"></div>
 
         <div class="seed-panel" id="seed-panel">
           <label class="seed-control" for="seed-input">
@@ -62,56 +61,112 @@
           <div class="ticket-virtualizer" id="ticket-virtualizer">
             <div class="ticket-grid" id="ticket-grid"></div>
           </div>
-          <div class="loading-wall" id="loading-wall">Loading 27,283 ticket numbers…</div>
-        </div>
-
-        <div class="intro-overlay" id="intro-overlay" hidden>
-          <div class="intro-dialog">
-            <button class="intro-close" id="intro-close" type="button" aria-label="Stop intro">×</button>
-            <section class="intro-slide" data-slide="intro-1">
-              <p class="intro-kicker">SoDEX RWA TOURNAMENT · ROUND 1</p>
-              <h2 class="intro-headline">SPACEX<br />LUCKY DRAW</h2>
-              <span class="intro-live-badge"><i></i>LIVE</span>
-            </section>
-            <section class="intro-slide" data-slide="intro-2">
-              <p class="intro-kicker">FOUR ROUNDS · BOTTOM UP</p>
-              <div class="intro-tiers">
-                <div class="intro-tier-card"><span>4TH PRIZE</span><strong>400</strong><em>× $18</em></div>
-                <div class="intro-tier-card"><span>3RD PRIZE</span><strong>90</strong><em>× $98</em></div>
-                <div class="intro-tier-card"><span>2ND PRIZE</span><strong>9</strong><em>× $998</em></div>
-                <div class="intro-tier-card is-grand"><span>1ST PRIZE</span><strong>1</strong><em>× $4,998</em></div>
-              </div>
-            </section>
-            <section class="intro-slide" data-slide="intro-3">
-              <p class="intro-kicker">THE NUMBERS</p>
-              <div class="intro-stats">
-                <div class="intro-stat"><strong>500</strong><span>PRIZES</span></div>
-                <div class="intro-stat"><strong>27,283</strong><span>TICKETS</span></div>
-                <div class="intro-stat is-pool"><strong>$30,000</strong><span>PRIZE POOL</span></div>
-              </div>
-            </section>
-            <section class="intro-slide" data-slide="intro-4">
-              <p class="intro-kicker">FAIR &amp; VERIFIABLE</p>
-              <div class="intro-proof">
-                <div class="intro-proof-row"><i>✓</i><span>Program open-sourced at <strong>github.com/sodex-tech/spcx-lucky-draw</strong></span></div>
-                <div class="intro-proof-row"><i>✓</i><span>Seed taken live from the <strong>latest valuechain transaction hash</strong></span></div>
-                <div class="intro-proof-row"><i>✓</i><span>Anyone can replay all 500 winners with <strong>verify.mjs</strong></span></div>
-              </div>
-              <p class="intro-goodluck">GOOD LUCK, EVERYONE!</p>
-            </section>
-          </div>
+          <div class="loading-wall" id="loading-wall">No tickets imported yet — open Settings to import them.</div>
         </div>
       </section>
 
       <aside class="result-rail">
         <header>
-          <div><p>CONFIRMED RESULTS</p><h2 id="latest-tier">No winners yet</h2></div>
-          <span id="winner-count">0 / 500</span>
+          <div><p>CONFIRMED RESULTS</p><h2 id="latest-round">No winners yet</h2></div>
+          <span id="winner-count">0 / 0</span>
         </header>
-        <div class="winner-strip" id="winner-strip"><p>Winning ticket numbers will appear here.</p></div>
-        <div class="result-list" id="result-list"><p class="empty-results">Start the 4th Prize draw to begin.</p></div>
+        <div class="winner-strip" id="winner-strip"><p>Winning tickets will appear here.</p></div>
+        <div class="result-list" id="result-list"><p class="empty-results">Completed rounds will appear here.</p></div>
       </aside>
     </main>
+
+    <div class="settings-overlay" id="settings-overlay" hidden>
+      <div class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
+        <header class="settings-header">
+          <div>
+            <p>SETUP</p>
+            <h2 id="settings-heading">Draw settings</h2>
+          </div>
+          <button class="dialog-close" id="settings-close" type="button" aria-label="Close settings">×</button>
+        </header>
+
+        <div class="settings-body">
+          <section class="settings-section">
+            <h3><span>1</span>Program</h3>
+            <label class="field">
+              <span>Title</span>
+              <input id="config-title" type="text" maxlength="80" placeholder="Lucky Draw" />
+            </label>
+          </section>
+
+          <section class="settings-section">
+            <h3><span>2</span>Tickets</h3>
+            <p class="section-hint">
+              One ticket per row. When the file has a header, a ticket column
+              (<code>ticket_number</code>, <code>ticket</code>, <code>id</code>…) and an optional name column
+              (<code>name</code>, <code>holder</code>, <code>user</code>…) are detected automatically; the name is shown
+              next to each winning ticket.
+            </p>
+            <div class="button-row">
+              <label class="file-button">
+                Choose CSV file
+                <input id="ticket-file" type="file" accept=".csv,.txt,.tsv,text/csv,text/plain" hidden />
+              </label>
+              <button class="ghost-button" id="ticket-sample-button" type="button">Load bundled ticket-map.csv</button>
+              <button class="ghost-button" id="ticket-clear-button" type="button">Clear tickets</button>
+            </div>
+            <textarea
+              id="ticket-textarea"
+              rows="5"
+              spellcheck="false"
+              placeholder="00001&#10;00002,Alice&#10;00003,Bob"
+            ></textarea>
+            <div class="button-row">
+              <button class="ghost-button" id="ticket-apply-button" type="button">Apply pasted tickets</button>
+              <p class="import-status" id="ticket-import-status">No tickets imported</p>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3><span>3</span>Prizes</h3>
+            <p class="section-hint">
+              Give every prize an icon, a name and a description. Upload a picture for the icon, or type an emoji.
+            </p>
+            <div class="prize-editor" id="prize-editor"></div>
+            <button class="ghost-button" id="add-prize-button" type="button">+ Add prize</button>
+          </section>
+
+          <section class="settings-section">
+            <h3><span>4</span>Rounds</h3>
+            <p class="section-hint">
+              Rounds are drawn top to bottom. A round can hand out several prizes at once — pick a prize and how many
+              winners it draws.
+            </p>
+            <div class="round-editor" id="round-editor"></div>
+            <button class="ghost-button" id="add-round-button" type="button">+ Add round</button>
+          </section>
+        </div>
+
+        <footer class="settings-footer">
+          <p class="settings-summary" id="settings-summary"></p>
+          <div class="settings-footer-actions">
+            <label class="file-button ghost">
+              Import config
+              <input id="config-file" type="file" accept="application/json,.json" hidden />
+            </label>
+            <button class="ghost-button" id="export-config-button" type="button">Export config</button>
+            <button class="ghost-button" id="settings-cancel" type="button">Cancel</button>
+            <button class="primary-button" id="settings-save" type="button">Save settings</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div class="celebrate-overlay" id="celebrate-overlay" hidden>
+      <div class="celebrate-dialog" role="dialog" aria-modal="true" aria-labelledby="celebrate-title">
+        <button class="dialog-close" id="celebrate-close" type="button" aria-label="Close">×</button>
+        <span class="celebrate-badge" id="celebrate-badge">ROUND COMPLETE</span>
+        <h2 class="celebrate-title" id="celebrate-title">Congratulations!</h2>
+        <p class="celebrate-subtitle" id="celebrate-subtitle"></p>
+        <div class="celebrate-prizes" id="celebrate-prizes"></div>
+        <button class="primary-button celebrate-continue" id="celebrate-continue" type="button">Continue</button>
+      </div>
+    </div>
 
     <script type="module" src="./app.mjs"></script>
   </body>
