@@ -20,7 +20,7 @@ import {
 const DRAW_DURATION_MS = 10_000;
 const CONFIG_KEY = "lucky-draw-setup-v1";
 const SESSION_KEY = "lucky-draw-session-v1";
-const CELEBRATE_WINNER_LIMIT = 10;
+const CELEBRATE_WINNER_LIMIT = 8;
 const ICON_MAX_EDGE = 192;
 const ICON_MAX_FILE_BYTES = 8 * 1024 * 1024;
 
@@ -567,7 +567,15 @@ function renderResultLedger() {
     copyButton.type = "button";
     copyButton.textContent = "Copy";
     copyButton.addEventListener("click", () => void copyRoundWinners(round, roundWinners, copyButton));
-    header.append(title, copyButton);
+    const viewButton = document.createElement("button");
+    viewButton.className = "tier-copy-button";
+    viewButton.type = "button";
+    viewButton.textContent = "View winners";
+    viewButton.addEventListener("click", () => showCelebration(round, roundWinners));
+    const actions = document.createElement("div");
+    actions.className = "result-actions";
+    actions.append(viewButton, copyButton);
+    header.append(title, actions);
     group.append(header);
 
     const prizeIds = [...new Set(roundWinners.map((winner) => winner.prizeId))];
@@ -781,24 +789,40 @@ function showCelebration(round, winners) {
 
     const list = document.createElement("div");
     list.className = "celebrate-winners";
-    prizeWinners.slice(0, CELEBRATE_WINNER_LIMIT).forEach((winner) => {
-      list.append(createWinnerLabel(winner, "celebrate-winner"));
-    });
-    const hiddenCount = prizeWinners.length - CELEBRATE_WINNER_LIMIT;
-    if (hiddenCount > 0) {
-      const more = document.createElement("span");
-      more.className = "celebrate-more";
-      more.textContent = `and ${hiddenCount.toLocaleString()} ${plural(hiddenCount, "other")}`;
-      list.append(more);
-    }
-
+    const pagination = document.createElement("nav");
+    pagination.className = "winner-pagination";
+    pagination.setAttribute("aria-label", `${prizeWinners[0].prizeName} winner pages`);
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.textContent = "← Previous";
+    const next = document.createElement("button");
+    next.type = "button";
+    next.textContent = "Next →";
+    const status = document.createElement("span");
+    status.setAttribute("aria-live", "polite");
+    let page = 0;
+    const renderPage = () => {
+      const start = page * CELEBRATE_WINNER_LIMIT;
+      const end = Math.min(start + CELEBRATE_WINNER_LIMIT, prizeWinners.length);
+      list.replaceChildren(...prizeWinners.slice(start, end).map((winner) =>
+        createWinnerLabel(winner, "celebrate-winner")));
+      status.textContent = `${start + 1}–${end} of ${prizeWinners.length} · Page ${page + 1}/${Math.ceil(prizeWinners.length / CELEBRATE_WINNER_LIMIT)}`;
+      previous.disabled = page === 0;
+      next.disabled = end >= prizeWinners.length;
+    };
+    previous.addEventListener("click", () => { page -= 1; renderPage(); });
+    next.addEventListener("click", () => { page += 1; renderPage(); });
+    pagination.append(previous, status, next);
+    renderPage();
     card.append(header, list);
+    if (prizeWinners.length > CELEBRATE_WINNER_LIMIT) card.append(pagination);
     elements.celebratePrizes.append(card);
   });
 
   elements.celebrateOverlay.hidden = false;
   startCelebrateMusic();
-  elements.celebrateContinue.focus();
+  elements.celebrateContinue.focus({ preventScroll: true });
+  document.querySelector(".celebrate-dialog").scrollTop = 0;
 }
 
 function closeCelebration() {

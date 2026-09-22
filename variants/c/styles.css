@@ -357,3 +357,59 @@ button { cursor: pointer; font: inherit; }
   .preset-heading { align-items: flex-start; flex-direction: column; }
   .preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Readable live draw and presentation results */
+.workspace { grid-template-columns: minmax(0, 1fr) 420px; }
+.draw-toolbar { flex-wrap: wrap; }
+.ticket-board { --ticket-height: 38px; --ticket-min-width: 80px; --ticket-gap: 5px; }
+.ticket-cell { font-size: 16px; font-weight: 650; color: #343a42; }
+.result-rail h2 { font-size: 20px; }
+.result-rail header p, .result-rail header > span { font-size: 12px; color: #505861; }
+.winner-strip, .winner-strip.has-holders { gap: 8px; grid-auto-rows: 76px; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 260px; }
+.winner-chip { border-radius: 8px; gap: 5px; padding: 10px 6px; }
+.winner-chip strong, .result-ticket strong { font-size: 25px; color: #17191c; }
+.winner-chip em, .result-ticket em { font-size: 13px; color: #505861; }
+.result-tickets, .result-tickets.has-holders { gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 340px; }
+.result-ticket { gap: 5px; border-radius: 8px; padding: 12px 6px; }
+.result-group h3 { font-size: 17px; }
+.result-group .result-meta { font-size: 13px; margin: 14px 0 10px; }
+.result-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tier-copy-button { font-size: 12px; height: 36px; }
+.celebrate-dialog { max-width: 1200px; padding: 28px; }
+.celebrate-badge { font-size: 12px; }
+.celebrate-subtitle { font-size: 16px; }
+.celebrate-prize h3 { font-size: 22px; }
+.celebrate-prize header p, .celebrate-count { font-size: 14px; }
+.celebrate-winners { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.celebrate-winner { min-width: 0; gap: 8px; padding: 18px 10px; border-radius: 10px; background: #fff8f2; border-color: #ebc6a9; }
+.celebrate-winner strong { font-size: clamp(28px, 3.5vw, 44px); max-width: 100%; color: #17191c; line-height: 1.2; }
+.celebrate-winner em { font-size: 16px; color: #505861; }
+.celebrate-winner:only-child { grid-column: 1 / -1; padding: 32px; }
+.celebrate-winner:only-child strong { font-size: clamp(40px, 6vw, 76px); }
+.winner-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; font-size: 14px; }
+.winner-pagination button { min-height: 44px; padding: 8px 18px; border: 1px solid var(--line-strong); border-radius: 6px; background: white; color: var(--ink); font-weight: 700; }
+.winner-pagination button:disabled { opacity: .4; cursor: default; }
+button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+@media (max-width: 1100px) and (min-width: 701px) {
+  .workspace { grid-template-columns: minmax(0, 1fr) 360px; }
+  .celebrate-winners { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .celebrate-dialog { padding: 26px 12px 18px; }
+  .celebrate-prize { padding: 12px; }
+  .celebrate-winners { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .celebrate-winner { padding: 14px 6px; }
+  .celebrate-winner strong { font-size: 26px; }
+  .celebrate-winner em { font-size: 12px; }
+  .celebrate-prize > header { flex-wrap: wrap; }
+  .winner-pagination { flex-wrap: wrap; font-size: 12px; }
+  .winner-pagination button { padding: 8px 10px; }
+}
+@media (min-width: 1101px) and (max-height: 800px) {
+  .celebrate-dialog { padding: 20px; max-height: 96vh; }
+  .celebrate-title { font-size: 32px; margin: 8px 0 4px; }
+  .celebrate-subtitle { margin-bottom: 12px; }
+  .celebrate-winner { padding: 12px 10px; gap: 5px; }
+  .celebrate-continue { margin-top: 10px; min-height: 40px; }
+  .winner-pagination { margin-top: 12px; }
+}
