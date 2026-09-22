@@ -344,7 +344,8 @@ button { cursor: pointer; font: inherit; }
 }
 
 /* Built-in SoDEX prize preset */
-.sodex-preset { margin: 16px 0; padding: 16px; border: 1px solid #354138; border-radius: 14px; background: #101813; }
+.sodex-preset { margin: 16px 0; padding: 16px; border: 1px solid #354138; border-radius: 14px; background: #101813; color: #f0f5f1; }
+.sodex-preset .section-hint { color: #b8c5be; }
 .preset-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .preset-heading .section-hint { margin: 5px 0 0; }
 .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
