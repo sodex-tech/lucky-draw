@@ -1,6 +1,7 @@
 import { applySodexPreset, SODEX_BOXES, SODEX_DRAW_COUNTS } from "../../sodex-preset.mjs";
 import {
   buildResultsCsv,
+  formatHolder,
   countConfiguredSlots,
   countRoundSlots,
   createDefaultConfig,
@@ -424,7 +425,7 @@ function renderVisibleTicketGrid() {
     if (confirmedTickets.has(ticket.ticketNumber)) cell.classList.add("is-confirmed");
     if (latestTickets.has(ticket.ticketNumber)) cell.classList.add("is-latest-winner");
     cell.textContent = ticket.ticketNumber;
-    cell.title = ticket.holder ? `${ticket.ticketNumber} · ${ticket.holder}` : ticket.ticketNumber;
+    cell.title = ticket.holder ? `${ticket.ticketNumber} · ${formatHolder(ticket.holder)}` : ticket.ticketNumber;
     ticketElements.set(ticket.ticketNumber, cell);
     fragment.append(cell);
   }
@@ -523,7 +524,7 @@ function createWinnerLabel(winner, className) {
   ticket.textContent = `#${winner.ticketNumber}`;
   if (winner.holder) {
     const holder = document.createElement("strong");
-    holder.textContent = winner.holder;
+    holder.textContent = formatHolder(winner.holder);
     chip.append(holder, ticket);
   } else {
     chip.append(ticket);
@@ -1258,7 +1259,7 @@ async function copyRoundWinners(round, winners, button) {
     .map((prizeId) => {
       const prizeWinners = winners.filter((winner) => winner.prizeId === prizeId);
       const lines = prizeWinners
-        .map((winner) => (winner.holder ? `#${winner.ticketNumber} ${winner.holder}` : `#${winner.ticketNumber}`))
+        .map((winner) => (winner.holder ? `#${winner.ticketNumber} ${formatHolder(winner.holder)}` : `#${winner.ticketNumber}`))
         .join(" ");
       return `${prizeWinners[0].prizeName} (${prizeWinners.length})\n${lines}`;
     })

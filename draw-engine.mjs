@@ -427,6 +427,12 @@ function escapeCsvCell(value) {
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
+// Keep original holder data for hashing and replay; abbreviate public output only.
+export function formatHolder(value) {
+  const text = String(value ?? "");
+  return text.replace(/0x[a-fA-F0-9]{40}\b/g, (address) => `${address.slice(0, 6)}....${address.slice(-4)}`);
+}
+
 export function buildResultsCsv({ winners, datasetHash, publicSeed, drawnAt }) {
   const headers = [
     "draw_order",
@@ -443,7 +449,7 @@ export function buildResultsCsv({ winners, datasetHash, publicSeed, drawnAt }) {
     winner.roundName,
     winner.prizeName,
     winner.ticketNumber,
-    winner.holder ?? "",
+    formatHolder(winner.holder),
     publicSeed,
     datasetHash,
     winner.drawnAt ?? drawnAt,

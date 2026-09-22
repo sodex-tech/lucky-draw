@@ -12,6 +12,7 @@
 import { readFile } from "node:fs/promises";
 import {
   countConfiguredSlots,
+  formatHolder,
   drawRound,
   normalizeConfig,
   parseTicketSource,
@@ -64,7 +65,7 @@ function escapeCsvCell(value) {
 console.log("draw_order,round,prize,ticket_number,holder");
 winners.forEach((winner, index) => {
   console.log(
-    [index + 1, winner.roundName, winner.prizeName, winner.ticketNumber, winner.holder]
+    [index + 1, winner.roundName, winner.prizeName, winner.ticketNumber, formatHolder(winner.holder)]
       .map(escapeCsvCell)
       .join(","),
   );

@@ -118,3 +118,7 @@ count and rarity columns do not create extra entries. `tokenid` / `token_id`
 over generic ID columns. Token IDs remain strings, preserving leading zeros and
 large integers. Duplicate IDs and missing token values are rejected. The offline
 verifier accepts the same snapshot format.
+
+Wallet addresses are shown as `0x1234....5678` in ticket tooltips, winner lists,
+celebration popups, copied results, CSV exports and offline verifier output.
+Original addresses remain in the internal dataset for hashing and replay.

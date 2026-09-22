@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildResultsCsv,
+  formatHolder,
   countConfiguredSlots,
   createDefaultConfig,
   createPrize,
@@ -309,4 +310,17 @@ test("rejects duplicate snapshot tokens and rows without token IDs", async () =>
     "wallet,token_ids\n0xAlice,7 8\n0xBob,8 9",
   )), /duplicate ticket number/i);
   assert.throws(() => parseTicketSource("wallet,tickets,token_ids\n0xAlice,2,"), /Row 2 has no ticket value/);
+});
+
+
+test("abbreviates wallet addresses in public output without changing source winners", () => {
+  const address = "0x1234567890abcdef1234567890abcdef12345678";
+  assert.equal(formatHolder(address), "0x1234....5678");
+  assert.equal(formatHolder("Alice"), "Alice");
+  assert.equal(formatHolder(undefined), "");
+  const winner = { ticketNumber: "42", holder: address, roundName: "R1", prizeName: "Box" };
+  const csv = buildResultsCsv({ winners: [winner], datasetHash: "hash", publicSeed: "seed", drawnAt: "now" });
+  assert.ok(csv.includes("0x1234....5678"));
+  assert.ok(!csv.includes(address));
+  assert.equal(winner.holder, address);
 });
