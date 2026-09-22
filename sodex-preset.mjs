@@ -3,6 +3,8 @@ import { SODEX_BOXES } from "./sodex-preset-assets.mjs";
 
 export { SODEX_BOXES };
 
+export const SODEX_DRAW_COUNTS = [100, 20, 2, 1];
+
 // Apply only to the settings draft. Tickets and program title belong to the host.
 export function applySodexPreset(config) {
   const prizes = SODEX_BOXES.map(({ name, description, icon }) =>
@@ -13,7 +15,7 @@ export function applySodexPreset(config) {
     prizes,
     rounds: prizes.map((prize, index) => createRound({
       name: `Round ${index + 1} · ${SODEX_BOXES[index].name}`,
-      items: [{ prizeId: prize.id, count: 1 }],
+      items: [{ prizeId: prize.id, count: SODEX_DRAW_COUNTS[index] }],
     })),
   };
 }

@@ -96,8 +96,8 @@ stripped out verifies just the same.
 In Settings → Prizes, choose **Use SoDEX preset** to load Common, Uncommon,
 Rare and Super Rare with their original card images and reward descriptions.
 This replaces prizes and rounds in the settings draft, keeping the title and
-imported tickets. Each tier starts with one winner in its own round; adjust
-counts before saving. Cancel discards the draft. Saving a changed setup follows
+imported tickets. The Sep 23 live draw has four rounds: Common ×100, Uncommon ×20, Rare ×2,
+then Super Rare ×1 (123 boxes total). Counts remain editable before saving. Cancel discards the draft. Saving a changed setup follows
 the existing confirmation flow when draw results exist.
 
 The reward ranges ($1–$8 / $10–$200 / $100–$1,300 / $400–$10,000, paid as Wealth

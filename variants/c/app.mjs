@@ -1,4 +1,4 @@
-import { applySodexPreset, SODEX_BOXES } from "../../sodex-preset.mjs";
+import { applySodexPreset, SODEX_BOXES, SODEX_DRAW_COUNTS } from "../../sodex-preset.mjs";
 import {
   buildResultsCsv,
   countConfiguredSlots,
@@ -810,7 +810,7 @@ function closeCelebration() {
 
 function renderSodexPreset() {
   const preview = document.querySelector("#sodex-preset-preview");
-  for (const box of SODEX_BOXES) {
+  for (const [index, box] of SODEX_BOXES.entries()) {
     const card = document.createElement("div");
     card.className = "preset-tier";
     card.style.setProperty("--tier-color", box.color);
@@ -820,7 +820,7 @@ function renderSodexPreset() {
     const name = document.createElement("strong");
     name.textContent = box.name;
     const range = document.createElement("span");
-    range.textContent = box.range;
+    range.textContent = `${SODEX_DRAW_COUNTS[index]} boxes · ${box.range}`;
     card.append(image, name, range);
     preview.append(card);
   }
@@ -834,7 +834,7 @@ document.querySelector("#sodex-preset-button").addEventListener("click", () => {
   renderRoundEditor();
   renderSettingsSummary();
   document.querySelector("#sodex-preset-status").textContent =
-    "SoDEX preset applied to draft · 4 tiers, 4 rounds. Adjust winner counts below and save when ready.";
+    "SoDEX preset applied to draft · 4 rounds · 100 Common + 20 Uncommon + 2 Rare + 1 Super Rare = 123 boxes. Save when ready.";
 });
 
 function openSettings() {
