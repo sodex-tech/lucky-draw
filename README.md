@@ -107,3 +107,14 @@ assets) and original artwork come from `sosovalue-tech/sodex-next`, commit
 `src/assets/images/treasure/box-*-card.webp`. These are bundled preset values,
 not live reward quotes. Images are embedded WebP data URLs so saved and exported
 configurations remain portable, including on GitHub Pages.
+
+## Wallet snapshot import
+
+Import snapshot CSVs with `wallet,tickets,boxes,common,uncommon,rare,superrare,token_ids`
+directly. The whitespace-separated `token_ids` cell is expanded to one draw entry
+per token ID. `wallet` is retained as the holder in results and exported CSVs;
+count and rarity columns do not create extra entries. `tokenid` / `token_id`
+(one token per row) are also recognized, with token columns taking precedence
+over generic ID columns. Token IDs remain strings, preserving leading zeros and
+large integers. Duplicate IDs and missing token values are rejected. The offline
+verifier accepts the same snapshot format.

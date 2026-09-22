@@ -243,7 +243,11 @@ export function parseTicketSource(source) {
   if (matrix.length === 0) throw new Error("No tickets found");
 
   const headers = matrix[0].map(normalizeHeader);
-  const headerTicketIndex = headers.findIndex((header) => TICKET_HEADER_KEYS.includes(header));
+  const tokenColumn = headers.findIndex((header) => header === "tokenids" || header === "tokenid");
+  const walletColumn = headers.findIndex((header) => header === "wallet" || header === "walletaddress");
+  const headerTicketIndex = tokenColumn >= 0
+    ? tokenColumn
+    : headers.findIndex((header) => TICKET_HEADER_KEYS.includes(header));
   const headerHolderIndex = headers.findIndex((header) => HOLDER_HEADER_KEYS.includes(header));
   const hasHeader = headerTicketIndex >= 0 || headerHolderIndex >= 0;
   const dataRows = hasHeader ? matrix.slice(1) : matrix;
@@ -259,7 +263,7 @@ export function parseTicketSource(source) {
 
   let ticketColumn = headerTicketIndex;
   if (ticketColumn < 0) ticketColumn = headerHolderIndex === 0 && columnCount > 1 ? 1 : 0;
-  let holderColumn = headerHolderIndex;
+  let holderColumn = tokenColumn >= 0 && walletColumn >= 0 ? walletColumn : headerHolderIndex;
   if (holderColumn < 0 && !hasHeader && columnCount > 1) holderColumn = ticketColumn === 0 ? 1 : 0;
   if (holderColumn === ticketColumn) holderColumn = -1;
 
@@ -270,10 +274,17 @@ export function parseTicketSource(source) {
       if (row.every((value) => value.trim() === "")) return;
       throw new Error(`Row ${index + (hasHeader ? 2 : 1)} has no ticket value`);
     }
-    tickets.push({
-      ticketNumber: normalizeTicketValue(rawTicket),
-      holder: holderColumn >= 0 ? clampText(row[holderColumn], 60) : "",
-    });
+    // Snapshot exports store all of a wallet's token IDs in one cell.
+    // Counts such as tickets/boxes are metadata, never draw entries.
+    const values = tokenColumn >= 0 && headers[tokenColumn] === "tokenids"
+      ? rawTicket.trim().split(/\s+/)
+      : [rawTicket];
+    for (const value of values) {
+      tickets.push({
+        ticketNumber: normalizeTicketValue(value),
+        holder: holderColumn >= 0 ? clampText(row[holderColumn], 60) : "",
+      });
+    }
   });
 
   if (tickets.length === 0) throw new Error("No tickets found");

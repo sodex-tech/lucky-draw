@@ -279,3 +279,34 @@ test("exports audit metadata, the public seed, and per-round timestamps", () => 
     "2,Round 2,Grand Prize,00777,,block-hash-0xabc,abc123,2026-07-14T10:00:00.000Z",
   );
 });
+
+
+test("expands snapshot token_ids and keeps the owning wallet, ignoring counts", async () => {
+  const source = "wallet,tickets,boxes,common,uncommon,rare,superrare,token_ids\n0xAlice,3,3,2,1,0,0,001 42 9007199254740993\n0xBob,1,1,1,0,0,0,99";
+  const parsed = parseTicketSource(source);
+  assert.deepEqual(parsed, [
+    { ticketNumber: "001", holder: "0xAlice" },
+    { ticketNumber: "42", holder: "0xAlice" },
+    { ticketNumber: "9007199254740993", holder: "0xAlice" },
+    { ticketNumber: "99", holder: "0xBob" },
+  ]);
+  assert.equal((await validateTicketDataset(parsed)).tickets.length, 4);
+});
+
+test("recognizes token ID aliases and prioritizes them over other ID columns", () => {
+  assert.deepEqual(parseTicketSource("id,Token ID,wallet\nrow1,0007,0xAlice"), [
+    { ticketNumber: "0007", holder: "0xAlice" },
+  ]);
+  assert.deepEqual(parseTicketSource('wallet,Token IDs\n0xAlice,"7  8\n9"'), [
+    { ticketNumber: "7", holder: "0xAlice" },
+    { ticketNumber: "8", holder: "0xAlice" },
+    { ticketNumber: "9", holder: "0xAlice" },
+  ]);
+});
+
+test("rejects duplicate snapshot tokens and rows without token IDs", async () => {
+  await assert.rejects(validateTicketDataset(parseTicketSource(
+    "wallet,token_ids\n0xAlice,7 8\n0xBob,8 9",
+  )), /duplicate ticket number/i);
+  assert.throws(() => parseTicketSource("wallet,tickets,token_ids\n0xAlice,2,"), /Row 2 has no ticket value/);
+});

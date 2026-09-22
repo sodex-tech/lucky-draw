@@ -100,7 +100,9 @@
               One ticket per row. When the file has a header, a ticket column
               (<code>ticket_number</code>, <code>ticket</code>, <code>id</code>…) and an optional name column
               (<code>name</code>, <code>holder</code>, <code>user</code>…) are detected automatically; the name is shown
-              next to each winning ticket.
+              next to each winning ticket. Snapshot CSVs with <code>wallet</code> and <code>token_ids</code>
+              are also supported: each space-separated token ID becomes one ticket, with its wallet shown as the holder.
+              Single-token <code>tokenid</code> / <code>token_id</code> columns also work.
             </p>
             <div class="button-row">
               <label class="file-button">
