@@ -90,3 +90,20 @@ stripped out verifies just the same.
 - `ticket-map.csv`: a 27,283-row sample ticket list.
 - `variants/c/app.mjs`: settings editor, session state, countdown, sound, congratulations popup, UI orchestration.
 - `variants/c/styles.css`: virtualized 2D ticket wall and responsive layout.
+
+## SoDEX Treasure Box preset
+
+In Settings → Prizes, choose **Use SoDEX preset** to load Common, Uncommon,
+Rare and Super Rare with their original card images and reward descriptions.
+This replaces prizes and rounds in the settings draft, keeping the title and
+imported tickets. Each tier starts with one winner in its own round; adjust
+counts before saving. Cancel discards the draft. Saving a changed setup follows
+the existing confirmation flow when draw results exist.
+
+The reward ranges ($1–$8 / $10–$200 / $100–$1,300 / $400–$10,000, paid as Wealth
+assets) and original artwork come from `sosovalue-tech/sodex-next`, commit
+`b39f852b6547652523565f8f813f861565ffc254`, specifically
+`src/features/treasure/domain/constants.ts`, `components/BoxArt.tsx` and
+`src/assets/images/treasure/box-*-card.webp`. These are bundled preset values,
+not live reward quotes. Images are embedded WebP data URLs so saved and exported
+configurations remain portable, including on GitHub Pages.

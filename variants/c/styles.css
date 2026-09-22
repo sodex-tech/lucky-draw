@@ -342,3 +342,17 @@ button { cursor: pointer; font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .ticket-cell.is-latest-winner, .winner-chip.is-new, .celebrate-prize, .celebrate-title, .settings-dialog, .celebrate-dialog { animation: none; }
 }
+
+/* Built-in SoDEX prize preset */
+.sodex-preset { margin: 16px 0; padding: 16px; border: 1px solid #354138; border-radius: 14px; background: #101813; }
+.preset-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.preset-heading .section-hint { margin: 5px 0 0; }
+.preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.preset-tier { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.preset-tier img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 10px; }
+.preset-tier strong { color: var(--tier-color); font-size: 13px; }
+.preset-tier span { color: #d5ded8; font-size: 12px; }
+@media (max-width: 600px) {
+  .preset-heading { align-items: flex-start; flex-direction: column; }
+  .preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

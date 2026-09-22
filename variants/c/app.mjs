@@ -1,3 +1,4 @@
+import { applySodexPreset, SODEX_BOXES } from "../../sodex-preset.mjs";
 import {
   buildResultsCsv,
   countConfiguredSlots,
@@ -807,12 +808,42 @@ function closeCelebration() {
 
 /* ----------------------------------------------------------- settings */
 
+function renderSodexPreset() {
+  const preview = document.querySelector("#sodex-preset-preview");
+  for (const box of SODEX_BOXES) {
+    const card = document.createElement("div");
+    card.className = "preset-tier";
+    card.style.setProperty("--tier-color", box.color);
+    const image = document.createElement("img");
+    image.src = box.icon;
+    image.alt = `${box.name} Treasure Box`;
+    const name = document.createElement("strong");
+    name.textContent = box.name;
+    const range = document.createElement("span");
+    range.textContent = box.range;
+    card.append(image, name, range);
+    preview.append(card);
+  }
+}
+
+renderSodexPreset();
+document.querySelector("#sodex-preset-button").addEventListener("click", () => {
+  if (!draft.config) return;
+  draft.config = applySodexPreset(draft.config);
+  renderPrizeEditor();
+  renderRoundEditor();
+  renderSettingsSummary();
+  document.querySelector("#sodex-preset-status").textContent =
+    "SoDEX preset applied to draft · 4 tiers, 4 rounds. Adjust winner counts below and save when ready.";
+});
+
 function openSettings() {
   if (state.drawing) return;
   draft.config = normalizeConfig(structuredClone(state.config));
   draft.dataset = state.dataset;
   draft.ticketStatus = "";
   draft.ticketStatusKind = "neutral";
+  document.querySelector("#sodex-preset-status").textContent = "";
   elements.configTitle.value = draft.config.title;
   elements.ticketTextarea.value = "";
   renderPrizeEditor();
