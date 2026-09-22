@@ -520,12 +520,12 @@ function renderRoundPlan() {
 function createWinnerLabel(winner, className) {
   const chip = document.createElement("span");
   chip.className = className;
-  const ticket = document.createElement("em");
+  const ticket = document.createElement("strong");
   ticket.textContent = `#${winner.ticketNumber}`;
   if (winner.holder) {
-    const holder = document.createElement("strong");
+    const holder = document.createElement("em");
     holder.textContent = formatHolder(winner.holder);
-    chip.append(holder, ticket);
+    chip.append(ticket, holder);
   } else {
     chip.append(ticket);
   }

@@ -136,11 +136,11 @@ button { cursor: pointer; font: inherit; }
 .result-rail h2 { font-size: 16px; margin: 0; overflow: hidden; text-overflow: ellipsis; }
 .result-rail header > span { color: var(--ink-secondary); font-family: var(--mono); font-size: 10px; white-space: nowrap; }
 .winner-strip { align-content: start; display: grid; gap: 3px; grid-auto-rows: 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 12px 16px; max-height: 145px; overflow-x: hidden; overflow-y: auto; scrollbar-color: var(--line-strong) var(--surface-muted); scrollbar-gutter: stable; scrollbar-width: thin; }
-.winner-strip.has-holders { grid-auto-rows: 34px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.winner-strip.has-holders { grid-auto-rows: 42px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .winner-strip p { color: var(--ink-tertiary); font-size: 10px; grid-column: 1 / -1; margin: 8px 0; }
 .winner-chip { align-items: center; background: var(--orange-soft); border: 1px solid var(--orange); color: var(--orange-ink); display: flex; flex-direction: column; justify-content: center; min-height: 24px; min-width: 0; overflow: hidden; padding: 0 3px; text-align: center; }
-.winner-chip strong { font-size: 9px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.winner-chip em { font-family: var(--mono); font-size: 8px; font-style: normal; font-weight: 700; }
+.winner-chip strong { font-family: var(--mono); font-size: 14px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.winner-chip em { font-family: var(--mono); font-size: 9px; font-style: normal; font-weight: 400; color: var(--ink-secondary); }
 .winner-chip.is-new { animation: chip-in .3s ease-out both; }
 .result-list { border-top: 1px solid var(--line); flex: 1; min-height: 0; overflow: auto; }
 .empty-results { color: var(--ink-tertiary); font-size: 10px; padding: 17px 16px; }
@@ -153,8 +153,8 @@ button { cursor: pointer; font: inherit; }
 .result-tickets { display: grid; gap: 3px; grid-template-columns: repeat(3, minmax(0, 1fr)); max-height: 220px; overflow: auto; }
 .result-tickets.has-holders { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .result-ticket { background: var(--surface-muted); border: 1px solid var(--line); display: grid; min-width: 0; overflow: hidden; padding: 4px 3px; text-align: center; }
-.result-ticket strong { font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.result-ticket em { color: var(--ink-secondary); font-family: var(--mono); font-size: 8px; font-style: normal; }
+.result-ticket strong { font-family: var(--mono); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-ticket em { color: var(--ink-secondary); font-family: var(--mono); font-size: 9px; font-style: normal; }
 
 /* ----------------------------------------------------------- dialogs */
 
@@ -290,8 +290,8 @@ button { cursor: pointer; font: inherit; }
 .celebrate-count { color: var(--orange); flex: 0 0 auto; font-size: 11px; font-weight: 800; margin-left: auto; white-space: nowrap; }
 .celebrate-winners { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 .celebrate-winner { align-items: center; background: var(--orange-soft); border: 1px solid var(--orange); border-radius: 2px; color: var(--orange-ink); display: flex; flex-direction: column; gap: 1px; min-width: 78px; padding: 6px 10px; }
-.celebrate-winner strong { font-size: 12px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.celebrate-winner em { font-family: var(--mono); font-size: 10px; font-style: normal; font-weight: 700; opacity: .78; }
+.celebrate-winner strong { font-family: var(--mono); font-size: 22px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.celebrate-winner em { font-family: var(--mono); font-size: 11px; font-style: normal; font-weight: 400; color: var(--ink-secondary); }
 .celebrate-more { align-items: center; background: var(--surface-muted); border: 1px dashed var(--line-strong); border-radius: 2px; color: var(--ink-secondary); display: flex; font-size: 11px; font-weight: 700; padding: 6px 12px; }
 .celebrate-continue { margin-top: 18px; min-width: 180px; }
 
