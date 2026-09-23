@@ -3,3 +3,6 @@ output/
 .playwright-cli/
 .DS_Store
 VOICEOVER.md
+
+# Participant snapshots and draw exports stay outside the public repository.
+*.csv

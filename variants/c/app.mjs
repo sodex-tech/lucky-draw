@@ -93,7 +93,6 @@ const elements = {
   ticketFile: document.querySelector("#ticket-file"),
   ticketGrid: document.querySelector("#ticket-grid"),
   ticketImportStatus: document.querySelector("#ticket-import-status"),
-  ticketSampleButton: document.querySelector("#ticket-sample-button"),
   ticketTextarea: document.querySelector("#ticket-textarea"),
   ticketVirtualizer: document.querySelector("#ticket-virtualizer"),
   winnerCount: document.querySelector("#winner-count"),
@@ -1405,17 +1404,6 @@ elements.ticketApplyButton.addEventListener("click", () => {
     return;
   }
   void importDraftTickets(source, "Pasted list");
-});
-elements.ticketSampleButton.addEventListener("click", async () => {
-  try {
-    const response = await fetch("../../ticket-map.csv", { cache: "no-store" });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    await importDraftTickets(await response.text(), "ticket-map.csv");
-  } catch (error) {
-    draft.ticketStatus = `ticket-map.csv: ${error instanceof Error ? error.message : "unavailable"}`;
-    draft.ticketStatusKind = "error";
-    renderTicketImportStatus();
-  }
 });
 elements.ticketClearButton.addEventListener("click", () => {
   draft.dataset = null;

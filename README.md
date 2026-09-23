@@ -25,8 +25,9 @@ Everything is configured in **Settings** (it opens automatically until a ticket
 list is imported):
 
 1. **Program** — the title shown in the top bar and the browser tab.
-2. **Tickets** — upload a CSV/TSV, paste a list, or load the bundled
-   `ticket-map.csv` sample. One ticket per row. When the file has a header, a
+2. **Tickets** — have the host upload a local CSV/TSV at draw time, or paste a
+   list. No participant snapshot is bundled or fetched by the site. One ticket
+   per row. When the file has a header, a
    ticket column (`ticket_number`, `ticket`, `id`, `serial`, `no`…) and an
    optional name column (`name`, `holder`, `user`, `nickname`…) are detected
    automatically; without a header the first column is the ticket and the second
@@ -87,7 +88,6 @@ stripped out verifies just the same.
 
 - `draw-engine.mjs`: ticket parsing, config validation, winner selection, CSV export.
 - `verify.mjs`: standalone replay tool for auditing a draw result.
-- `ticket-map.csv`: a 27,283-row sample ticket list.
 - `variants/c/app.mjs`: settings editor, session state, countdown, sound, congratulations popup, UI orchestration.
 - `variants/c/styles.css`: virtualized 2D ticket wall and responsive layout.
 

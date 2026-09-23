@@ -97,7 +97,7 @@
           <section class="settings-section">
             <h3><span>2</span>Tickets</h3>
             <p class="section-hint">
-              One ticket per row. When the file has a header, a ticket column
+              Choose a CSV from this device when the host is ready to draw. One ticket per row. When the file has a header, a ticket column
               (<code>ticket_number</code>, <code>ticket</code>, <code>id</code>…) and an optional name column
               (<code>name</code>, <code>holder</code>, <code>user</code>…) are detected automatically; the name is shown
               next to each winning ticket. Snapshot CSVs with <code>wallet</code> and <code>token_ids</code>
@@ -109,7 +109,6 @@
                 Choose CSV file
                 <input id="ticket-file" type="file" accept=".csv,.txt,.tsv,text/csv,text/plain" hidden />
               </label>
-              <button class="ghost-button" id="ticket-sample-button" type="button">Load bundled ticket-map.csv</button>
               <button class="ghost-button" id="ticket-clear-button" type="button">Clear tickets</button>
             </div>
             <textarea
