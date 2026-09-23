@@ -320,6 +320,19 @@ export function compareTickets(left, right) {
   return leftValue < rightValue ? -1 : leftValue > rightValue ? 1 : 0;
 }
 
+export function formatRoundWinnersForCopy(round, winners) {
+  const prizeIds = [...new Set(winners.map((winner) => winner.prizeId))];
+  const groups = prizeIds.map((prizeId) => {
+    const prizeWinners = winners.filter((winner) => winner.prizeId === prizeId);
+    const ticketNumbers = [...prizeWinners]
+      .sort(compareTickets)
+      .map((winner) => `#${winner.ticketNumber}`)
+      .join(" ");
+    return `${prizeWinners[0].prizeName} (${prizeWinners.length})\n${ticketNumbers}`;
+  });
+  return `${round.name}\n${groups.join("\n\n")}`;
+}
+
 export async function validateTicketDataset(tickets) {
   if (!Array.isArray(tickets) || tickets.length === 0) {
     throw new Error("Import at least one ticket");

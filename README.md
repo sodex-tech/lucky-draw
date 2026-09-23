@@ -65,8 +65,9 @@ a live show keeps the setup and the winners drawn so far.
    winners.
 4. Every confirmed ticket is removed from later rounds, so one ticket cannot win
    twice — including when the same prize is drawn twice in one round.
-5. Each round can be copied with its prizes and winners, and the complete result
-   can be exported as CSV.
+5. Each round can be copied with its prizes and winning ticket numbers sorted
+   from smallest to largest. Copied text omits wallet addresses. The complete
+   result can be exported as CSV.
 6. The exported CSV contains draw order, round, prize, ticket number, holder
    name, **the public seed**, the dataset hash and the UTC confirmation time of
    each round — everything needed to replay the draw.

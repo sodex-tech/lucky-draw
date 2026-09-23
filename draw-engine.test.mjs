@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildResultsCsv,
   formatHolder,
+  formatRoundWinnersForCopy,
   countConfiguredSlots,
   createDefaultConfig,
   createPrize,
@@ -23,6 +24,18 @@ function makeTickets(count) {
     holder: "",
   }));
 }
+
+test("copied round winners contain sorted ticket numbers without holders", () => {
+  const winners = [
+    { ticketNumber: "10", holder: "0xaaaaaaaa", prizeId: "box", prizeName: "Box" },
+    { ticketNumber: "2", holder: "0xbbbbbbbb", prizeId: "box", prizeName: "Box" },
+    { ticketNumber: "001", holder: "0xcccccccc", prizeId: "box", prizeName: "Box" },
+  ];
+  assert.equal(
+    formatRoundWinnersForCopy({ name: "Round 2" }, winners),
+    "Round 2\nBox (3)\n#001 #2 #10",
+  );
+});
 
 test("keeps ticket values verbatim instead of forcing a numeric format", () => {
   assert.equal(normalizeTicketValue(" 01234 "), "01234");

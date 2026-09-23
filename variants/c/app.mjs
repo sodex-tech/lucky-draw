@@ -2,6 +2,7 @@ import { applySodexPreset, SODEX_BOXES, SODEX_DRAW_COUNTS } from "../../sodex-pr
 import {
   buildResultsCsv,
   formatHolder,
+  formatRoundWinnersForCopy,
   countConfiguredSlots,
   countRoundSlots,
   createDefaultConfig,
@@ -1369,17 +1370,7 @@ async function writeClipboard(text) {
 
 async function copyRoundWinners(round, winners, button) {
   if (winners.length === 0) return;
-  const prizeIds = [...new Set(winners.map((winner) => winner.prizeId))];
-  const body = prizeIds
-    .map((prizeId) => {
-      const prizeWinners = winners.filter((winner) => winner.prizeId === prizeId);
-      const lines = prizeWinners
-        .map((winner) => (winner.holder ? `#${winner.ticketNumber} ${formatHolder(winner.holder)}` : `#${winner.ticketNumber}`))
-        .join(" ");
-      return `${prizeWinners[0].prizeName} (${prizeWinners.length})\n${lines}`;
-    })
-    .join("\n\n");
-  await writeClipboard(`${round.name}\n${body}`);
+  await writeClipboard(formatRoundWinnersForCopy(round, winners));
   button.textContent = `Copied ${winners.length}`;
   playTone({ frequency: 660, duration: 0.16, gain: 0.035, type: "triangle" });
   window.setTimeout(() => {
