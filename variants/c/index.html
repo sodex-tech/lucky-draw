@@ -28,7 +28,7 @@
           <div>
             <p>CURRENT ROUND <span id="round-progress">0 / 0</span></p>
             <h1 id="round-title">No draw configured</h1>
-            <span id="draw-message">Open Settings to import tickets and define prizes</span>
+          <span id="draw-message">Complete setup to start drawing</span>
           </div>
           <div class="draw-controls">
             <div class="countdown" id="countdown">
@@ -61,7 +61,7 @@
           <div class="ticket-virtualizer" id="ticket-virtualizer">
             <div class="ticket-grid" id="ticket-grid"></div>
           </div>
-          <div class="loading-wall" id="loading-wall">No tickets imported yet — open Settings to import them.</div>
+          <div class="loading-wall" id="loading-wall">Complete setup to import tickets.</div>
         </div>
       </section>
 
@@ -75,6 +75,40 @@
       </aside>
     </main>
 
+    <div class="onboarding-overlay" id="onboarding-overlay" hidden>
+      <div class="onboarding-shell" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+        <aside class="onboarding-sidebar">
+          <div class="onboarding-brand"><span class="onboarding-mark">✦</span><strong>Lucky Draw</strong></div>
+          <div class="onboarding-intro">
+            <span class="onboarding-eyebrow">DRAW SETUP</span>
+            <h2>Get ready for the draw.</h2>
+            <p>Four focused steps. Your ticket file stays on this device and is only loaded when you choose it.</p>
+          </div>
+          <ol class="onboarding-steps" id="onboarding-steps">
+            <li><span>01</span><strong>Program</strong><small>Name your draw</small></li>
+            <li><span>02</span><strong>Tickets</strong><small>Import the entries</small></li>
+            <li><span>03</span><strong>Prizes</strong><small>Choose what people win</small></li>
+            <li><span>04</span><strong>Rounds</strong><small>Set the draw order</small></li>
+          </ol>
+          <p class="onboarding-private">Snapshot data is never bundled with the public site.</p>
+        </aside>
+        <div class="onboarding-main">
+          <header class="onboarding-header">
+            <span id="onboarding-counter">STEP 1 OF 4</span>
+            <div class="onboarding-progress" aria-hidden="true"><span id="onboarding-progress-fill"></span></div>
+          </header>
+          <div class="onboarding-content settings-body" id="onboarding-content"></div>
+          <footer class="onboarding-footer">
+            <p id="onboarding-error" role="alert"></p>
+            <div>
+              <button class="ghost-button" id="onboarding-back" type="button">Back</button>
+              <button class="primary-button" id="onboarding-next" type="button">Continue</button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
     <div class="settings-overlay" id="settings-overlay" hidden>
       <div class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
         <header class="settings-header">
@@ -86,7 +120,7 @@
         </header>
 
         <div class="settings-body">
-          <section class="settings-section">
+          <section class="settings-section" data-setup-step="0">
             <h3><span>1</span>Program</h3>
             <label class="field">
               <span>Title</span>
@@ -94,7 +128,7 @@
             </label>
           </section>
 
-          <section class="settings-section">
+          <section class="settings-section" data-setup-step="1">
             <h3><span>2</span>Tickets</h3>
             <p class="section-hint">
               Choose a CSV from this device when the host is ready to draw. One ticket per row. When the file has a header, a ticket column
@@ -123,7 +157,7 @@
             </div>
           </section>
 
-          <section class="settings-section">
+          <section class="settings-section" data-setup-step="2">
             <h3><span>3</span>Prizes</h3>
             <p class="section-hint">
               Give every prize an icon, a name and a description. Upload a picture for the icon, or type an emoji.
@@ -141,7 +175,7 @@
             <button class="ghost-button" id="add-prize-button" type="button">+ Add prize</button>
           </section>
 
-          <section class="settings-section">
+          <section class="settings-section" data-setup-step="3">
             <h3><span>4</span>Rounds</h3>
             <p class="section-hint">
               Rounds are drawn top to bottom. A round can hand out several prizes at once — pick a prize and how many

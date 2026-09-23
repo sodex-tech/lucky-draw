@@ -158,6 +158,67 @@ button { cursor: pointer; font: inherit; }
 
 /* ----------------------------------------------------------- dialogs */
 
+.onboarding-overlay {
+  background: #e9ecef;
+  display: grid;
+  inset: 0;
+  padding: clamp(12px, 3vw, 40px);
+  place-items: center;
+  position: fixed;
+  z-index: 80;
+}
+.onboarding-overlay[hidden] { display: none; }
+.onboarding-shell {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 22px 80px rgb(22 29 36 / 12%);
+  display: grid;
+  grid-template-columns: minmax(245px, 31%) minmax(0, 1fr);
+  height: min(760px, calc(100vh - 48px));
+  max-width: 1100px;
+  overflow: hidden;
+  width: 100%;
+}
+.onboarding-sidebar {
+  background: #202428;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 40px);
+}
+.onboarding-brand { align-items: center; display: flex; font-size: 18px; gap: 10px; }
+.onboarding-mark { align-items: center; background: var(--orange); border-radius: 3px; display: flex; height: 28px; justify-content: center; width: 28px; }
+.onboarding-intro { margin: 65px 0 28px; }
+.onboarding-eyebrow { color: #f7a36f; font-size: 10px; font-weight: 800; letter-spacing: .17em; }
+.onboarding-intro h2 { font-size: clamp(27px, 3vw, 39px); letter-spacing: -.045em; line-height: 1.08; margin: 12px 0; }
+.onboarding-intro p, .onboarding-private { color: #aeb7bf; font-size: 12px; line-height: 1.6; }
+.onboarding-steps { display: grid; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.onboarding-steps li { align-items: center; border: 1px solid transparent; color: #aeb7bf; display: grid; gap: 0 12px; grid-template-columns: 32px 1fr; padding: 10px; }
+.onboarding-steps li.is-current { background: #30363b; border-color: #4b535a; color: #fff; }
+.onboarding-steps li.is-complete { color: #e4e9ec; }
+.onboarding-steps li > span { color: #e98b50; font-family: var(--mono); font-size: 12px; grid-row: span 2; }
+.onboarding-steps strong { font-size: 13px; }
+.onboarding-steps small { color: #9fa9b1; font-size: 10px; }
+.onboarding-private { margin: auto 0 0; padding-top: 24px; }
+.onboarding-main { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; min-width: 0; overflow: hidden; }
+.onboarding-header { border-bottom: 1px solid var(--line); padding: 28px clamp(24px, 4vw, 52px) 0; }
+.onboarding-header > span { color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .14em; }
+.onboarding-progress { background: var(--surface-muted); height: 3px; margin-top: 24px; }
+.onboarding-progress span { background: var(--orange); display: block; height: 100%; transition: width .25s ease; }
+.onboarding-content { align-content: start; display: block; min-height: 0; overflow: auto; padding: clamp(24px, 4vw, 52px); }
+.onboarding-content .settings-section h3 { font-size: clamp(24px, 2.5vw, 34px); letter-spacing: -.035em; margin-bottom: 18px; }
+.onboarding-content .settings-section h3 span { font-size: 13px; height: 30px; width: 30px; }
+.onboarding-content .section-hint { font-size: 12px; line-height: 1.6; }
+.onboarding-content .field > span { font-size: 10px; }
+.onboarding-content .field input, .onboarding-content .field select, .onboarding-content textarea { font-size: 14px; min-height: 42px; }
+.onboarding-content .ghost-button, .onboarding-content .file-button { font-size: 12px; height: 40px; }
+.onboarding-content .import-status { font-size: 11px; }
+.onboarding-footer { align-items: center; border-top: 1px solid var(--line); display: flex; gap: 16px; justify-content: space-between; padding: 19px clamp(24px, 4vw, 52px); }
+.onboarding-footer p { color: var(--danger); font-size: 12px; font-weight: 700; margin: 0; }
+.onboarding-footer > div { display: flex; gap: 9px; margin-left: auto; }
+.onboarding-footer button { font-size: 12px; height: 40px; min-width: 94px; }
+.onboarding-footer button[hidden] { display: none; }
+
 .settings-overlay, .celebrate-overlay {
   align-items: center;
   backdrop-filter: blur(3px);
@@ -319,6 +380,21 @@ button { cursor: pointer; font: inherit; }
 }
 
 @media (max-width: 700px) {
+  .onboarding-overlay { padding: 0; }
+  .onboarding-shell { border: 0; display: flex; flex-direction: column; height: 100dvh; }
+  .onboarding-sidebar { padding: 18px 24px; }
+  .onboarding-intro, .onboarding-private { display: none; }
+  .onboarding-steps { display: flex; gap: 4px; margin-top: 16px; }
+  .onboarding-steps li { flex: 1; grid-template-columns: 1fr; padding: 6px 3px; text-align: center; }
+  .onboarding-steps li > span { grid-row: auto; }
+  .onboarding-steps li small { display: none; }
+  .onboarding-steps li strong { font-size: 10px; }
+  .onboarding-main { flex: 1; min-height: 0; }
+  .onboarding-header { padding-top: 18px; }
+  .onboarding-progress { margin-top: 15px; }
+  .onboarding-content { padding: 24px; }
+  .onboarding-footer { align-items: stretch; flex-direction: column; }
+  .onboarding-footer p:empty { display: none; }
   .topbar { padding: 0 13px; }
   .broadcast-status { display: none; }
   .topbar-actions { gap: 4px; }

@@ -45,6 +45,8 @@ const draft = {
   ticketStatusKind: "neutral",
 };
 
+const onboarding = { step: 0, activeSection: null, placeholder: null };
+
 const ticketElements = new Map();
 
 const elements = {
@@ -69,6 +71,14 @@ const elements = {
   exportConfigButton: document.querySelector("#export-config-button"),
   latestRound: document.querySelector("#latest-round"),
   loadingWall: document.querySelector("#loading-wall"),
+  onboardingBack: document.querySelector("#onboarding-back"),
+  onboardingContent: document.querySelector("#onboarding-content"),
+  onboardingCounter: document.querySelector("#onboarding-counter"),
+  onboardingError: document.querySelector("#onboarding-error"),
+  onboardingNext: document.querySelector("#onboarding-next"),
+  onboardingOverlay: document.querySelector("#onboarding-overlay"),
+  onboardingProgressFill: document.querySelector("#onboarding-progress-fill"),
+  onboardingSteps: document.querySelector("#onboarding-steps"),
   prizeEditor: document.querySelector("#prize-editor"),
   programTitle: document.querySelector("#program-title"),
   resetButton: document.querySelector("#reset-button"),
@@ -633,7 +643,7 @@ function render() {
     elements.drawButton.textContent = "Start round";
     elements.drawButton.disabled = true;
     elements.drawMessage.textContent =
-      configIssues[0] ?? "Open Settings to import tickets and define prizes";
+      configIssues[0] ?? "Complete setup to import tickets and define prizes";
   } else if (complete) {
     elements.roundTitle.textContent = `All ${totalSlots.toLocaleString()} ${plural(totalSlots, "winner")} confirmed`;
     elements.drawButton.textContent = "Draw complete";
@@ -874,8 +884,7 @@ document.querySelector("#sodex-preset-button").addEventListener("click", () => {
     "SoDEX preset applied to draft · 4 rounds · 100 Common + 20 Uncommon + 2 Rare + 1 Super Rare = 123 boxes. Save when ready.";
 });
 
-function openSettings() {
-  if (state.drawing) return;
+function prepareDraft() {
   draft.config = normalizeConfig(structuredClone(state.config));
   draft.dataset = state.dataset;
   draft.ticketStatus = "";
@@ -887,6 +896,11 @@ function openSettings() {
   renderRoundEditor();
   renderTicketImportStatus();
   renderSettingsSummary();
+}
+
+function openSettings() {
+  if (state.drawing || !elements.onboardingOverlay.hidden) return;
+  prepareDraft();
   elements.settingsOverlay.hidden = false;
   elements.configTitle.focus();
 }
@@ -895,6 +909,69 @@ function closeSettings() {
   elements.settingsOverlay.hidden = true;
   draft.config = null;
   draft.dataset = null;
+}
+
+function restoreOnboardingSection() {
+  if (!onboarding.activeSection) return;
+  onboarding.placeholder.replaceWith(onboarding.activeSection);
+  onboarding.activeSection = null;
+  onboarding.placeholder = null;
+}
+
+function showOnboardingStep(index) {
+  restoreOnboardingSection();
+  onboarding.step = index;
+  const section = document.querySelector(`[data-setup-step="${index}"]`);
+  onboarding.placeholder = document.createComment(`setup-step-${index}`);
+  section.replaceWith(onboarding.placeholder);
+  elements.onboardingContent.replaceChildren(section);
+  onboarding.activeSection = section;
+  elements.onboardingCounter.textContent = `STEP ${index + 1} OF 4`;
+  elements.onboardingProgressFill.style.width = `${((index + 1) / 4) * 100}%`;
+  elements.onboardingBack.hidden = index === 0;
+  elements.onboardingNext.textContent = index === 3 ? "Finish setup" : "Continue";
+  elements.onboardingError.textContent = "";
+  [...elements.onboardingSteps.children].forEach((item, itemIndex) => {
+    item.classList.toggle("is-current", itemIndex === index);
+    item.classList.toggle("is-complete", itemIndex < index);
+    if (itemIndex === index) item.setAttribute("aria-current", "step");
+    else item.removeAttribute("aria-current");
+  });
+  elements.onboardingContent.scrollTop = 0;
+  section.querySelector("input:not([type=file]), button, textarea")?.focus();
+}
+
+function startOnboarding() {
+  prepareDraft();
+  document.querySelector(".topbar").inert = true;
+  document.querySelector(".workspace").inert = true;
+  elements.onboardingOverlay.hidden = false;
+  showOnboardingStep(0);
+}
+
+function closeOnboarding() {
+  restoreOnboardingSection();
+  elements.onboardingOverlay.hidden = true;
+  document.querySelector(".topbar").inert = false;
+  document.querySelector(".workspace").inert = false;
+}
+
+function onboardingStepIssue() {
+  if (onboarding.step === 0 && !elements.configTitle.value.trim()) return "Enter a program title to continue.";
+  if (onboarding.step === 1 && !draft.dataset) return "Import a ticket list to continue.";
+  if (onboarding.step === 2 && draft.config.prizes.length === 0) return "Add at least one prize to continue.";
+  if (onboarding.step === 3) return validateConfig(draft.config, draft.dataset?.tickets.length ?? 0)[0] ?? "";
+  return "";
+}
+
+function advanceOnboarding() {
+  const issue = onboardingStepIssue();
+  if (issue) {
+    elements.onboardingError.textContent = issue;
+    return;
+  }
+  if (onboarding.step < 3) showOnboardingStep(onboarding.step + 1);
+  else saveSettings();
 }
 
 function renderTicketImportStatus() {
@@ -922,6 +999,7 @@ function renderSettingsSummary() {
       ? issues[0]
       : `${draft.config.rounds.length} ${plural(draft.config.rounds.length, "round")} · ${draft.config.prizes.length} ${plural(draft.config.prizes.length, "prize")} · ${totalSlots.toLocaleString()} ${plural(totalSlots, "winner")} of ${draft.dataset.tickets.length.toLocaleString()} tickets`;
   elements.settingsSave.disabled = issues.length > 0;
+  if (!elements.onboardingOverlay.hidden) elements.onboardingError.textContent = "";
 }
 
 function syncPrizeOptionLabels() {
@@ -1217,6 +1295,7 @@ function saveSettings() {
       : `${state.dataset.tickets.length.toLocaleString()} tickets ready (too large to save locally)`,
     persisted ? "success" : "neutral",
   );
+  if (!elements.onboardingOverlay.hidden) closeOnboarding();
   closeSettings();
   renderTicketGrid();
   render();
@@ -1368,9 +1447,12 @@ elements.settingsButton.addEventListener("click", openSettings);
 elements.settingsClose.addEventListener("click", closeSettings);
 elements.settingsCancel.addEventListener("click", closeSettings);
 elements.settingsSave.addEventListener("click", saveSettings);
+elements.onboardingBack.addEventListener("click", () => showOnboardingStep(onboarding.step - 1));
+elements.onboardingNext.addEventListener("click", advanceOnboarding);
 elements.exportConfigButton.addEventListener("click", exportConfig);
 elements.configTitle.addEventListener("input", () => {
   draft.config.title = elements.configTitle.value;
+  if (!elements.onboardingOverlay.hidden) elements.onboardingError.textContent = "";
 });
 elements.addPrizeButton.addEventListener("click", () => {
   draft.config.prizes.push(createPrize({ name: `Prize ${draft.config.prizes.length + 1}` }));
@@ -1467,7 +1549,7 @@ async function bootstrap() {
   }
   renderTicketGrid();
   render();
-  if (!restored || !state.dataset) openSettings();
+  if (!restored || !state.dataset || validateConfig(state.config, state.dataset.tickets.length).length > 0) startOnboarding();
 }
 
 void bootstrap();

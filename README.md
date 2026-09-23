@@ -1,7 +1,7 @@
 # Lucky Draw
 
-A general-purpose, verifiable lucky draw for live shows. Import a ticket list,
-define your prizes and rounds in Settings, then draw round by round — each round
+A general-purpose, verifiable lucky draw for live shows. Follow the first-run
+setup to import a ticket list and define your prizes and rounds, then draw round by round — each round
 ends with a congratulations popup naming the prize and its winners.
 
 ## Run
@@ -21,8 +21,9 @@ npm test
 
 ## Set up a draw
 
-Everything is configured in **Settings** (it opens automatically until a ticket
-list is imported):
+An incomplete draw opens a four-step setup flow. Each step handles one part of
+the setup, with Back and Continue controls. Finish setup to enter the draw.
+Afterward, use **Settings** to edit the same configuration:
 
 1. **Program** — the title shown in the top bar and the browser tab.
 2. **Tickets** — have the host upload a local CSV/TSV at draw time, or paste a
