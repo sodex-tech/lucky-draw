@@ -770,9 +770,22 @@ function showCelebration(round, winners) {
     const prize = findPrize(prizeId);
     const card = document.createElement("article");
     card.className = "celebrate-prize";
+    if (prizeWinners.length === 1) card.classList.add("is-single-winner");
 
     const header = document.createElement("header");
-    header.append(createIconElement(prize?.icon ?? "🎁", "prize-icon is-large"));
+    const sodexBox = SODEX_BOXES.find((box) => box.icon === prize?.icon);
+    if (sodexBox) {
+      card.classList.add("has-sodex-art");
+      const art = document.createElement("figure");
+      art.className = "celebrate-box-art";
+      const image = document.createElement("img");
+      image.src = new URL(`./assets/boxes/box-${sodexBox.key}-closed.webp`, import.meta.url).href;
+      image.alt = `${sodexBox.name} Treasure Box`;
+      art.append(image);
+      card.append(art);
+    } else {
+      header.append(createIconElement(prize?.icon ?? "🎁", "prize-icon is-large"));
+    }
     const heading = document.createElement("div");
     const name = document.createElement("h3");
     name.textContent = prizeWinners[0].prizeName;
