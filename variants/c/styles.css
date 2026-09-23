@@ -361,8 +361,6 @@ button { cursor: pointer; font: inherit; }
 /* Readable live draw and presentation results */
 .workspace { grid-template-columns: minmax(0, 1fr) 420px; }
 .draw-toolbar { flex-wrap: wrap; }
-.ticket-board { --ticket-height: 38px; --ticket-min-width: 80px; --ticket-gap: 5px; }
-.ticket-cell { font-size: 16px; font-weight: 650; color: #343a42; }
 .result-rail h2 { font-size: 20px; }
 .result-rail header p, .result-rail header > span { font-size: 12px; color: #505861; }
 .winner-strip, .winner-strip.has-holders { gap: 8px; grid-auto-rows: 76px; grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: 260px; }
@@ -419,14 +417,10 @@ button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 .celebrate-box-art img { height: 100%; left: 0; object-fit: contain; position: absolute; top: 0; transform: scale(1.55); width: 100%; }
 .celebrate-prize.has-sodex-art.is-single-winner .celebrate-box-art { width: 260px; height: 220px; margin-bottom: 14px; }
 .celebrate-prize.has-sodex-art h3 { font-size: 24px; }
-.ticket-board { --ticket-height: 52px; --ticket-min-width: 118px; --ticket-gap: 7px; }
-.ticket-cell { font-size: 20px; font-weight: 750; }
 @media (max-width: 700px) {
   .celebrate-box-art { width: 144px; height: 122px; }
   .celebrate-prize.has-sodex-art.is-single-winner .celebrate-box-art { width: 180px; height: 154px; }
   .celebrate-prize.has-sodex-art h3 { font-size: 20px; }
-  .ticket-board { --ticket-height: 40px; --ticket-min-width: 72px; --ticket-gap: 4px; }
-  .ticket-cell { font-size: 14px; }
 }
 @media (min-width: 701px) {
   .celebrate-prize.has-sodex-art.is-single-winner {
